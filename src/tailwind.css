@@ -1,0 +1,15 @@
+@tailwind base;
+
+@import url(https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@300;400;500;600;700&display=swap);
+
+body {
+    @apply font-body
+}
+
+h1, h2, h3 {
+    @apply font-heading
+}
+
+@tailwind components;
+
+@tailwind utilities;

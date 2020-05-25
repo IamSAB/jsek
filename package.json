@@ -1,0 +1,32 @@
+{
+  "name": "jsek",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index",
+  "private": true,
+  "dependencies": {
+    "@factor/core": "^1.7.10",
+    "@factor/plugin-blog": "^1.7.9",
+    "@factor/plugin-contact-form": "^1.0.0",
+    "@factor/plugin-notify": "^1.0.0",
+    "@factor/plugin-seo": "^1.0.0",
+    "@factor/plugin-sitemap": "^1.0.0",
+    "@factor/plugin-storage-s3": "^1.0.0",
+    "@factor/plugin-tailwind": "^1.7.9"
+  },
+  "factor": {
+    "app": {
+      "name": "JSEK",
+      "url": "https://jungschar-ek.ch",
+      "email": "no-reply@jungschar-ek.ch"
+    },
+    "admins": [
+      "2011pbosi@gmail.com",
+      "simon-andreas.boesch@hotmail.com"
+    ],
+    "load": [
+      "app",
+      "server"
+    ]
+  }
+}
