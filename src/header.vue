@@ -89,7 +89,7 @@ export default {
 
 <style>
   .page-header {
-    background: rgb(49,130,206);
-    background: linear-gradient(0deg, rgba(49,130,206,1) 0%, rgba(44,82,130,1) 80%, rgba(67,65,144,1) 100%); 
+    background: var(--color-primary);
+    background: radial-gradient(circle at center, var(--color-tertiary) 0%, var(--color-primary) 20%, var(--color-secondary) 100%); 
   }
 </style>

@@ -1,15 +1,27 @@
 @tailwind base;
+@tailwind components;
 
 @import url(https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@300;400;500;600;700&display=swap);
 
-body {
-    @apply font-body
+.factor-app {
+    --color-secondary: theme('colors.blue.900');
+    --color-primary: theme('colors.blue.700');
+    --color-tertiary: theme('colors.blue.500');
+    --color-text: theme('colors.gray.900');
+    --color-bg: theme('colors.gray.200');
+    --color-border: theme('colors.gray.300');
+    --color-bg-contrast: theme('colors.gray.600');
+    --color-bg-hightlight: theme('colors.blue.600');
+    --color-placholder: theme('colors.gray.200');
+    --font-family-primary: theme('fontFamily.body');
 }
 
-h1, h2, h3 {
-    @apply font-heading
+.factor-app body {
+    @apply font-body;
 }
 
-@tailwind components;
+.factor-app h1, h2, h3 {
+    @apply font-heading;
+}
 
 @tailwind utilities;

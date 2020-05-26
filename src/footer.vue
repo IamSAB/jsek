@@ -33,7 +33,7 @@ export default {
 
 <style>
 .page-footer {
-  background: rgb(49,130,206);
-  background: linear-gradient(180deg, rgba(49,130,206,1) 0%, rgba(44,82,130,1) 80%, rgba(67,65,144,1) 100%); 
+  background: var(--color-primary);
+  background: linear-gradient(180deg, var(--color-tertiary) 0%, var(--color-primary) 50%, var(--color-secondary) 100%);
 }
 </style>

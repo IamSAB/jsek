@@ -25,7 +25,6 @@ export default {
             header: (): Promise<any> => import("./header.vue"),
             footer: (): Promise<any> => import("./footer.vue"),
         },
-        logo: require("./svg/jsek.svg"),
         menus: {
             socials: [
                 {
