@@ -1,8 +1,8 @@
 <template>
   <div class="antialiased text-gray-900">
-    <header-primary />
+    <jsek-header />
     <router-view />
-    <footer-primary />
+    <jsek-footer />
   </div>
 </template>
 
@@ -10,8 +10,8 @@
 import { setting } from "@factor/api/settings"
 export default {
   components: {
-    "header-primary": setting(`site.components.header`),
-    "footer-primary": setting(`site.components.footer`),
+    jsekHeader: setting(`site.components.header`),
+    jsekFooter: setting(`site.components.footer`),
   },
   metaInfo() {
     return {
@@ -21,7 +21,3 @@ export default {
   },
 }
 </script>
-
-<style lang="less">
-
-</style>

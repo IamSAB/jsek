@@ -140,6 +140,9 @@
         <polygon points="0,0 0,10 100,10 100,0 60,10" />
       </svg>
     </section>
+    <section>
+      <contact-form></contact-form>
+    </section>
   </main>
 </template>
 
@@ -147,6 +150,7 @@
 import dayjs, { Dayjs } from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import "dayjs/locale/de-ch";
+import contactForm from "@factor/plugin-contact-form/contact-form.vue"
 
 import { factorPostEdit } from "@factor/post";
 import {
@@ -171,7 +175,8 @@ export default {
   components: {
     factorPostEdit,
     factorAvatar,
-    factorLightbox
+    factorLightbox,
+    contactForm
   },
   data() {
     return {
