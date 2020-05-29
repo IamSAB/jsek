@@ -108,9 +108,17 @@
     </section>
     <section id="bilder" class="container mx-auto px-5 py-8">
       <div v-if="images.length > 0" class="flex flex-wrap justify-center">
-        <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-3" v-for="(image, i) in images" :key="i">
+        <div
+          class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-3"
+          v-for="(image, i) in images"
+          :key="i"
+        >
           <div class="rounded-lg overflow-hidden">
-            <img class="object-cover w-full h-64 cursor-pointer" @click="openGallery(i)" :src="image.url" />
+            <img
+              class="object-cover w-full h-64 cursor-pointer"
+              @click="openGallery(i)"
+              :src="image.url"
+            />
           </div>
         </div>
         <factor-lightbox :visible.sync="galleryVisible" :images="images" :selected="selectedImage" />
@@ -118,30 +126,56 @@
       <p v-else class="text-lg font-semibold text-center">Keine Bilder vorhanden.</p>
     </section>
     <section id="team" class="bg-gray-200">
-      <svg class="fill-current text-white h-16 w-full" viewbox="0 0 100 10" preserveAspectRatio="none">
+      <svg
+        class="fill-current text-white h-16 w-full"
+        viewBox="0 0 100 10"
+        preserveAspectRatio="none"
+      >
         <polygon points="0,0 0,10 30,0 100,10 100,0" />
       </svg>
       <div class="container mx-auto px-5 py-8 text-center">
         <h2 class="text-4xl">Team</h2>
         <div class="border-2 border-gray-500 w-16 mt-1 mx-auto" />
         <div class="flex flex-wrap items-center justify-center mt-6">
-          <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mt-6" v-for="leader in settings.team" :key="leader.__key">
-            <factor-avatar class="mx-auto" style="width: 128px;" :url="leader.image ? getAttachement(leader.image[0]).url : ''" />
+          <div
+            class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mt-6"
+            v-for="leader in settings.team"
+            :key="leader.__key"
+          >
+            <factor-avatar
+              class="mx-auto"
+              style="width: 128px;"
+              :url="leader.image ? getAttachement(leader.image[0]).url : ''"
+            />
             <div class="text-gray-600 mt-3">{{ leader.__title }}</div>
             <h3 class="text-3xl -mt-2">{{ leader.jsname }}</h3>
             <div class="text-sm text-gray-500 mt-1">dabei seit {{ leader.since }}</div>
             <div class="flex flex-wrap justify-center">
-                <div class="uppercase font-semibold text-xs tracking-wider mx-1" v-for="role in leader.roles" :key="role">{{ role }}</div>
+              <div
+                class="uppercase font-semibold text-xs tracking-wider mx-1"
+                v-for="role in leader.roles"
+                :key="role"
+              >{{ role }}</div>
             </div>
           </div>
         </div>
       </div>
-      <svg class="fill-current text-white h-16 w-full" viewbox="0 0 100 10" preserveAspectRatio="none">
+      <svg
+        class="fill-current text-white h-16 w-full"
+        viewBox="0 0 100 10"
+        preserveAspectRatio="none"
+      >
         <polygon points="0,0 0,10 100,10 100,0 60,10" />
       </svg>
     </section>
-    <section>
-      <contact-form></contact-form>
+    <section id="form">
+      <div class="container mx-auto px-5 py-8 text-center">
+        <form-stufe
+          :fields="form.fields"
+          :confirmation="form.confirmation"
+          :notification="form.notification"
+        ></form-stufe>
+      </div>
     </section>
   </main>
 </template>
@@ -150,7 +184,7 @@
 import dayjs, { Dayjs } from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import "dayjs/locale/de-ch";
-import contactForm from "@factor/plugin-contact-form/contact-form.vue"
+import formStufe from "../components/form.vue";
 
 import { factorPostEdit } from "@factor/post";
 import {
@@ -176,14 +210,13 @@ export default {
     factorPostEdit,
     factorAvatar,
     factorLightbox,
-    contactForm
+    formStufe
   },
   data() {
     return {
       selectedImage: 0,
       galleryVisible: false,
-      content: "",
-      items: []
+      content: ""
     };
   },
   metaInfo() {
@@ -199,6 +232,43 @@ export default {
     },
     settings(this: any) {
       return this.post.settings || {};
+    },
+    form() {
+      return {
+        fields: [
+          {
+            _id: "name",
+            input: "text",
+            label: "Name",
+            description: "Voller Name oder Familienname"
+          },
+          {
+            _id: "email",
+            input: "email",
+            label: "Email",
+            description:
+              "Erhälst eine Bestätigung deiner Anfrage an diese Adresse."
+          },
+          {
+            _id: "nachricht",
+            input: "editor",
+            label: "Nachricht",
+            description: "Was liegt dir auf dem Herzen?"
+          }
+        ],
+        confirmation: {
+          to: values => values.email,
+          title: values => `Deine Anfrage via Formular auf ${document.title}`,
+          subject: values =>
+            `Bestätigung deiner Nachricht an Stufe ${this.post.title} als ${values.name}`
+        },
+        notification: {
+          to: () => this.settings.email,
+          title: values => `Anfrage via Formular auf ${document.title}`,
+          subject: values =>
+            `Anfrage an Stufe ${this.title} auf ${document.title} von ${values.name} / ${values.email}`
+        }
+      };
     },
     images() {
       const images = [];
@@ -238,13 +308,19 @@ export default {
       });
 
       return events;
+    },
+    url() {
+      return window.location.href;
+    },
+    title() {
+      return document.title;
     }
   },
   methods: {
     setting,
     renderMarkdown,
     getAttachement(hash: string) {
-      return stored(hash) || ""
+      return stored(hash) || "";
     },
     getDuration(start: Dayjs, end: Dayjs) {
       if (end.diff(start, "hour") > 24) {
@@ -265,27 +341,32 @@ export default {
       {
         _id: "programTitle",
         input: "text",
-        label: "Semestertitel"
+        label: "Semestertitel",
+        description: "Thema / Titel des Semesters"
       },
       {
         _id: "age",
         input: "text",
-        label: "Alter"
+        label: "Zielgruppe",
+        description: "Alter oder Klasse der Teilnehmer"
       },
       {
         _id: "programDescription",
         input: "textarea",
-        label: "Semesterprogramm"
+        label: "Semesterprogramm",
+        description: "Kurzbeschreibung des Programms des Semesters"
       },
       {
         _id: "flyer",
         input: "image-upload",
-        label: "Semesterflyer"
+        label: "Semesterflyer",
+        description: "Offizieler Flyer der Stufe für das Semester"
       },
       {
-        _id: "logo",
-        input: "textarea",
-        label: "Logo"
+        _id: "email",
+        input: "email",
+        label: "Email",
+        description: "Email für das Formular und für allgemeinen Kontakt"
       },
       {
         _id: "events",
@@ -363,6 +444,12 @@ export default {
             _default: "Aug, 2016"
           }
         ]
+      },
+      {
+        _id: "logo",
+        input: "textarea",
+        label: "Logo",
+        description: "SVG markup"
       }
     ];
   }
@@ -371,9 +458,9 @@ export default {
 
 <style>
 .vh-1\/3 {
-  height: calc(100vh/3);
+  height: calc(100vh / 3);
 }
 .vh-1\/2 {
-  height: calc(100vh/2);
+  height: calc(100vh / 2);
 }
 </style>
