@@ -34,6 +34,6 @@ export default {
 <style>
 .page-footer {
   background: var(--color-primary);
-  background: linear-gradient(180deg, var(--color-tertiary) 0%, var(--color-primary) 50%, var(--color-secondary) 100%);
+  background: linear-gradient(180deg, var(--color-darkgray-lighter) 0%, var(--color-darkgray) 50%, var(--color-darkgray-darker) 100%);
 }
 </style>

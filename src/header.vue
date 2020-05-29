@@ -90,6 +90,6 @@ export default {
 <style>
   .page-header {
     background: var(--color-primary);
-    background: radial-gradient(circle at center, var(--color-tertiary) 0%, var(--color-primary) 20%, var(--color-secondary) 100%); 
+    background: radial-gradient(circle at center, var(--color-primary-lighter) 0%, var(--color-primary) 50%, var(--color-primary-darker) 100%); 
   }
 </style>
