@@ -3,25 +3,38 @@
 
 @import url(https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@300;400;500;600;700&display=swap);
 
-.factor-app {
-    --color-secondary: theme('colors.blue.900');
-    --color-primary: theme('colors.blue.700');
-    --color-tertiary: theme('colors.blue.500');
-    --color-text: theme('colors.gray.900');
-    --color-bg: theme('colors.gray.200');
-    --color-border: theme('colors.gray.300');
-    --color-bg-contrast: theme('colors.gray.600');
-    --color-bg-hightlight: theme('colors.blue.600');
-    --color-placholder: theme('colors.gray.200');
+.factor-site {
+
+    /* primary colors */
+    --color-primary-darker: theme('colors.blue.900');
+    --color-primary: theme('colors.blue.800');
+    --color-primary-lighter: theme('colors.blue.700');
+    
+    /* secondary colors */
+    --color-secondary-darker: theme('colors.green.900');
+    --color-secondary: theme('colors.green.800');
+    --color-secondary-lighter: theme('colors.green.700');
+
+    /* lighgray colors */
+    --color-lightgray-darker: theme('colors.gray.300');
+    --color-lightgray: theme('colors.gray.200');
+    --color-lightgray-lighter: theme('colors.gray.100');
+
+    /* darkgray colors */
+    --color-darkgray-darker: theme('colors.gray.900');
+    --color-darkgray: theme('colors.gray.800');
+    --color-darkgray-lighter: theme('colors.gray.700');
+
+    --color-text: var(--color-darkgray-darker);
+    --color-border: var(--color-lightgray-darker);
+
+    /* background colors */
+    --color-bg: var(--color-lightgray);
+    --color-bg-contrast: var(--color-darkgray-lighter);
+    --color-bg-highlight: theme('colors.blue.200');
+
+    --color-placholder: var(--color-lightgray);
     --font-family-primary: theme('fontFamily.body');
-}
-
-.factor-app body {
-    @apply font-body;
-}
-
-.factor-app h1, h2, h3 {
-    @apply font-heading;
 }
 
 @tailwind utilities;
