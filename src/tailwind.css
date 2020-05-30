@@ -27,9 +27,9 @@ html.factor-app {
     --color-border: var(--color-lightgray-darker);
 
     /* background colors */
-    --color-bg: var(--color-lightgray);
+    --color-bg: var(--color-lightgray-lighter);
     --color-bg-contrast: var(--color-lighgray-darker);
-    --color-bg-highlight: var(--color-lighgray-lighter);
+    --color-bg-highlight: #ffffff;
 
     --color-placholder: var(--color-lightgray);
     --font-family-primary: theme('fontFamily.body');

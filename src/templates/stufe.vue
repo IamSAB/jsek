@@ -8,41 +8,18 @@
       <div class="border-2 border-gray-500 w-16 mx-auto my-4" />
       <p class="text-xl font-bold">&laquo; {{ post.synopsis }} &raquo;</p>
     </header>
-    <section id="featured" class="relative inset-auto">
-      <svg
-        viewBox="0 0 100 50"
-        class="absolute fill-current text-white top-0 w-full h-16"
-        preserveAspectRatio="none"
-      >
-        <path d="M 0 0 A 50 25 0 0 0  100 0" />
-      </svg>
-      <img class="vh-1/2 w-full object-cover" :src="getAttachement(post.avatar).url" />
-      <svg
-        viewBox="0 0 100 50"
-        class="absolute bottom-0 fill-current text-white w-full h-16"
-        preserveAspectRatio="none"
-      >
-        <path d="M 0 50 A 50 25 0 0 1 100 50" />
-      </svg>
-      <div class="absolute inset-0">
-        <div class="flex items-center justify-center h-full">
+    <svg-section id="featured" bg-before="var(--color-bg)" top-svg="arc" :svg-absolute="true">
+      <div class="relative">
+        <img class="vh-1/2 w-full object-cover" :src="getAttachement(post.avatar).url" />
+        <div class="absolute inset-0 flex items-center justify-center h-full">
           <div v-html="post.settings.logo" />
         </div>
       </div>
-    </section>
+    </svg-section>
     <section class="flex justify-center">
-      <div class="w-2/3 text-center">
-        <div v-formatted-text="renderMarkdown(post.content)" class="content entry-content" />
-      </div>
+      <div class="w-2/3 text-center mb-16" v-formatted-text="renderMarkdown(post.content)" />
     </section>
-    <section id="events" class="bg-gray-200 mt-10">
-      <svg
-        viewBox="0 0 100 10"
-        class="fill-current text-white w-full h-12"
-        preserveAspectRatio="none"
-      >
-        <polygon points="0,0 0,10 50,0 100,10 100,0" />
-      </svg>
+    <svg-section id="events" bg="var(--color-lightgray-darker)" bg-before="var(--color-bg)" top-svg="triangle">
       <div class="container mx-auto px-5 py-10 text-center">
         <div class="uppercase font-semibold tracking-wider text-sm text-gray-600">Semesterprogramm</div>
         <h2 class="text-4xl -mt-1">{{ post.settings.programTitle }}</h2>
@@ -98,14 +75,7 @@
           </div>
         </div>
       </div>
-      <svg
-        viewBox="0 0 100 10"
-        class="fill-current text-white w-full h-12"
-        preserveAspectRatio="none"
-      >
-        <polygon points="0,0 0,10 100,10 100,0 50,10" />
-      </svg>
-    </section>
+    </svg-section>
     <section id="bilder" class="container mx-auto px-5 py-8">
       <div v-if="images.length > 0" class="flex flex-wrap justify-center">
         <div
@@ -125,14 +95,7 @@
       </div>
       <p v-else class="text-lg font-semibold text-center">Keine Bilder vorhanden.</p>
     </section>
-    <section id="team" class="bg-gray-200">
-      <svg
-        class="fill-current text-white h-16 w-full"
-        viewBox="0 0 100 10"
-        preserveAspectRatio="none"
-      >
-        <polygon points="0,0 0,10 30,0 100,10 100,0" />
-      </svg>
+    <svg-section id="team" bg="var(--color-lightgray-darker)" bg-before="var(--color-bg)" top-svg="obliqueTriangleLeft" bottom-svg-transform="rotate(180deg)">
       <div class="container mx-auto px-5 py-8 text-center">
         <h2 class="text-4xl">Team</h2>
         <div class="border-2 border-gray-500 w-16 mt-1 mx-auto" />
@@ -160,16 +123,9 @@
           </div>
         </div>
       </div>
-      <svg
-        class="fill-current text-white h-16 w-full"
-        viewBox="0 0 100 10"
-        preserveAspectRatio="none"
-      >
-        <polygon points="0,0 0,10 100,10 100,0 60,10" />
-      </svg>
-    </section>
+    </svg-section>
     <section id="form">
-      <div class="container mx-auto px-5 py-8 text-center">
+      <div class="container mx-auto px-5 py-8 text-center my-16">
         <form-stufe
           :fields="form.fields"
           :confirmation="form.confirmation"
@@ -185,7 +141,7 @@ import dayjs, { Dayjs } from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import "dayjs/locale/de-ch";
 import formStufe from "../components/form.vue";
-
+import svgSection from "../components/svg-section.vue";
 import { factorPostEdit } from "@factor/post";
 import {
   setting,
@@ -210,7 +166,8 @@ export default {
     factorPostEdit,
     factorAvatar,
     factorLightbox,
-    formStufe
+    formStufe,
+    svgSection
   },
   data() {
     return {
