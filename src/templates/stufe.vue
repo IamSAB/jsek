@@ -240,20 +240,23 @@ export default {
             _id: "name",
             input: "text",
             label: "Name",
-            description: "Voller Name oder Familienname"
+            description: "Voller Name oder Familienname",
+            required: true
           },
           {
             _id: "email",
             input: "email",
             label: "Email",
             description:
-              "Erhälst eine Bestätigung deiner Anfrage an diese Adresse."
+              "Erhälst eine Bestätigung deiner Anfrage an diese Adresse.",
+            required: true
           },
           {
             _id: "nachricht",
             input: "editor",
             label: "Nachricht",
-            description: "Was liegt dir auf dem Herzen?"
+            description: "Was liegt dir auf dem Herzen?",
+            required: true
           }
         ],
         confirmation: {

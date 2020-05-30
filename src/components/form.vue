@@ -2,11 +2,10 @@
   <factor-form
     ref="form"
     class="contact-form"
-    data-test="contact-form"
     :class="formStatus"
     @submit="process()"
   >
-    <div v-if="processed" class="confirm" data-test="confirm">
+    <div v-if="processed" class="confirm">
       <slot name="confirmation">
         Einreichung war erfolgreich.
         <br />Du hast eine Bestätigung deiner Anfrage erhalten.
@@ -27,17 +26,10 @@
         :label-classes="`${field.labelClasses}`"
         :placeholder="getPlaceholder(field)"
       />
-      <btn 
+      <factor-input-submit
         btn="primary"
-        size="lg"
-        type="submit"
-        >
-        <span v-if="!processed">Senden</span>
-        <span v-if="processing">
-          <span v-if="saving">Speichern</span>
-          <span v-if="sending">Versenden</span>
-        </span>
-      </btn>
+        :loading="sending"
+      >Senden</factor-input-submit>
     </div>
   </factor-form>
 </template>
@@ -58,7 +50,7 @@ import { saveForm, renderTable } from "../form";
 import btn from "./btn.vue"
 
 export default {
-  components: { factorInputWrap, factorForm, factorInputSubmit, factorSpinner },
+  components: { factorInputWrap, factorForm, factorInputSubmit, factorSpinner, btn },
   props: {
     fields: {
       type: Array,
@@ -114,14 +106,14 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$route);
     this.$watch(
       "values",
       function(this: any) {
         const v = this.$refs.form.$el.checkValidity();
+        console.log(v)
         this.formStatus = v ? "valid" : "invalid";
       },
-      { deep: true }
+      { deep: true, immediate: true }
     );
   },
   methods: {
@@ -183,3 +175,18 @@ export default {
   }
 };
 </script>
+
+<style lang="postcss">
+#app .editor-toolbar button.table {
+  display: inline;
+}
+#app .CodeMirror {
+  text-align: left;
+}
+#app input, select, textarea {
+  @apply bg-white w-2/3 max-w-md
+}
+#app input:focus, select:focus {
+  @apply shadow;
+}
+</style>
