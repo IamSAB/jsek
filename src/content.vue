@@ -1,5 +1,5 @@
 <template>
-  <div class="antialiased text-gray-900">
+  <div class="antialiased">
     <jsek-header />
     <router-view />
     <jsek-footer />

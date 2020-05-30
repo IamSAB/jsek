@@ -6,7 +6,7 @@
                 :path="item.path"
                 :event="item.event"
                 :target="item.target"
-                class="text-white hover:border-b-2 border-blue-100 hover:text-blue-100 uppercase font-semibold tracking-wide text-sm"
+                class="text-white hover:border-b-2 border-solid border-blue-100 hover:text-blue-100 uppercase font-semibold tracking-wide text-sm"
             >
             <span v-if="item.name" v-formatted-text="item.name" />
             </factor-link>
