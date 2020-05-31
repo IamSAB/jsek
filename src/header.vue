@@ -59,19 +59,27 @@
       </li>
     </ul>
   </nav>
+  <div class="absolute top-0 left-0 p-5" v-if="postId">
+    <factor-link class="text-white">
+      <factor-icon icon="fas fa-edit" />
+      <factor-post-edit class="text-white uppercase font-semibold" :post-id="postId"/>
+    </factor-link>
+  </div>
 </header>
 </template>
 
 <script lang="ts">
 import { factorIcon, factorLink } from "@factor/ui"
-import { setting } from "@factor/api"
+import { setting, stored } from "@factor/api"
+import { factorPostEdit } from "@factor/post";
 import Menu from "./components/menu.vue"
 
 export default {
   components: {
     Menu,
     factorIcon,
-    factorLink
+    factorLink,
+    factorPostEdit
   },
   data() {
     return {
@@ -79,6 +87,12 @@ export default {
       menuNavbarLeft: setting("site.menus.navbarLeft"),
       menuNavbarRight: setting("site.menus.navbarRight"),
       socials: setting("site.menus.socials")
+    }
+  },
+  computed: {
+    postId () {
+      const post = stored("permalink");
+      return  post ? post._id : ""
     }
   },
   mounted: function () {
