@@ -40,6 +40,9 @@ const path = (d: string) => {
   }
 }
 const components = {
+  invertedTriangle: {
+    render: polygon("0,0 50,10 100,0")
+  },
   triangle: {
     render: polygon("0,0 0,10 50,0 100,10 100,0")
   },
