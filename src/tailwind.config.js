@@ -3,8 +3,8 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                'heading': ['Pacifico', 'cursive'],
-                'body': ['Quicksand', 'sans-serif']
+                'heading': ['Permanent Marker', 'cursive'],
+                'body': ['Overpass', 'sans-serif']
             },
             colors: {
                 primary: {
