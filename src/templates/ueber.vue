@@ -1,8 +1,12 @@
 <template>
   <main>
     <heading class="text-center mt-5" above="Über uns" :title="post.title" :below="post.synopsis" />
-      
-    <svg-section top-svg="rightTriangleLeft" :svg-absolute="true" bg-before="var(--color-bg)" bg-after="var(--color-lightgray)">
+    <svg-section
+      top-svg="rightTriangleLeft"
+      :svg-absolute="true"
+      bg-before="var(--color-bg)"
+      bg-after="var(--color-lightgray)"
+    >
       <photo :source="post.images[0]" object="cover" class="vh-1/2" />
     </svg-section>
     <svg-section
@@ -20,7 +24,13 @@
       <div class="container mb-10">
         <div class="flex justify-center">
           <div class="w-1/3 px-3 text-center" v-for="group in settings.groups" :key="group.__key">
-            <heading class="mt-2 mb-4" :above="group.__title" :title="group.title" :heading="3" :divider="false" />
+            <heading
+              class="mt-2 mb-4"
+              :above="group.__title"
+              :title="group.title"
+              :heading="3"
+              :divider="false"
+            />
             <photo :source="group.images" object="contain" class="h-32" />
             <div class="markdown mt-4" v-formatted-text="renderMarkdown(group.content)" />
             <factor-link :path="group.permalink">Mehr</factor-link>
@@ -30,19 +40,21 @@
     </section>
     <activities :data="settings.activities" />
     <section id="zusammenarbeit">
-      <heading class="text-center mt-10" above="Vernetzt" title="Zusammenarbeit" :heading="2" />
+      <heading class="mt-10 text-center" above="Vernetzt" title="Zusammenarbeit" :heading="2" />
       <div class="container">
-        <div class="md:col-count-2 lg:col-count-3 col-gap-lg col-rule col-rule-solid mt-4">
-          <div
-            class="mb-4 text-center mx-3 mb-5 pt-5 border-t border-solid border-gray-300 col-break-none"
-            v-for="collaborator in settings.collaboration"
-            :key="collaborator.__key"
-          >
-            <div></div>
+        <div
+          v-for="(collaborator, i) in settings.collaboration"
+          :key="collaborator.__key"
+          class="flex flex-col sm:flex-row items-center justify-center mt-8 text-center"
+        >
+          <div :class="`max-w-xs ${i%2 ? 'md:mr-24 xl:mr-32 mx-6':'mx-6 md:ml-24 xl:ml-32'}`">
             <photo :source="collaborator.logo" object="contain" class="h-32 mb-2" />
             <heading :above="collaborator.__title" :title="collaborator.title" :heading="3" />
-            <div class="markdown" v-formatted-text="renderMarkdown(collaborator.content)" />
           </div>
+          <div
+            :class="`markdown flex-grow ${i%2 ? 'sm:text-right sm:order-first' : 'sm:text-left'}`"
+            v-formatted-text="renderMarkdown(collaborator.content)"
+          />
         </div>
       </div>
     </section>
