@@ -1,14 +1,13 @@
 <template>
   <main>
     <header id="stufe" class="text-center">
-      <factor-post-edit :post-id="post._id" />
       <div class="uppercase font-semibold tracking-wider text-lg text-gray-700 mt-2">Stufe</div>
       <h1 class="text-5xl -mt-1">{{ post.title }}</h1>
       <div class="font-semibold text-gray-600 mt-1">{{ post.settings.age }}</div>
       <div class="border-2 border-gray-500 w-16 mx-auto my-4" />
       <p class="text-xl font-bold">&laquo; {{ post.synopsis }} &raquo;</p>
     </header>
-    <svg-section id="featured" bg-before="var(--color-bg)" top-svg="arc" :svg-absolute="true">
+    <svg-section id="featured" bg-before="var(--color-bg)" top-svg="invertedTriangle" :svg-absolute="true">
       <div class="relative">
         <img class="vh-1/2 w-full object-cover" :src="getAttachement(post.avatar).url" />
         <div class="absolute inset-0 flex items-center justify-center h-full">
