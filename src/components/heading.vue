@@ -4,9 +4,9 @@
       v-if="above"
       :class="`uppercase font-bold tracking-wider text-gray-700 ${textSize.above}`"
     >{{ above }}</div>
-    <heading :class="`-mt-4 font-black ${textSize.heading}`" :h="heading">{{title}}</heading>
+    <heading :class="`-mt-2 font-black leading-none ${textSize.heading}`" :h="heading">{{title}}</heading>
     <div v-if="below" :class="`font-semibold text-gray-600 ${textSize.below}`">{{ below }}</div>
-    <div v-if="divider" class="border-solid border-2 border-gray-500 w-16 mx-auto my-2" />
+    <div v-if="divider" class="inline-block border-solid border-2 border-gray-500 w-16 my-2" />
   </div>
 </template>
 

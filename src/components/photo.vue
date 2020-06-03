@@ -1,6 +1,6 @@
 <template>
-    <div class="h-24">
-        <img class="object-fit" v-if="url" :src="url">
+    <div>
+        <img :class="`h-full w-full object-${object}`" v-if="url" :src="url">
         <div v-else class="flex flex-col justify-center items-center h-full border-solid border border-gray-400">
             <svg class="h-12 stroke-current text-gray-400" viewbox="-4 -3 40 30" fill="none">
                 <rect x="0" y="0" width="32" height="24" />
@@ -19,6 +19,10 @@ export default {
         source: {
             type: String,
             required: true
+        },
+        object: {
+            type: String,
+            default: () => "cover"
         }
     },
     computed: {
