@@ -12,7 +12,8 @@
     "@factor/plugin-seo": "^1.0.0",
     "@factor/plugin-sitemap": "^1.0.0",
     "@factor/plugin-storage-s3": "^1.0.0",
-    "@factor/plugin-tailwind": "^1.7.9"
+    "@factor/plugin-tailwind": "^1.7.9",
+    "tailwindcss-multi-column": "^1.0.2"
   },
   "factor": {
     "app": {
@@ -28,8 +29,5 @@
       "app": "index",
       "server": "server"
     }
-  },
-  "devDependencies": {
-    "tailwindcss-multi-column": "^1.0.2"
   }
 }
