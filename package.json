@@ -24,9 +24,12 @@
       "2011pbosi@gmail.com",
       "simon-andreas.boesch@hotmail.com"
     ],
-    "load": [
-      "app",
-      "server"
-    ]
+    "load": {
+      "app": "index",
+      "server": "server"
+    }
+  },
+  "devDependencies": {
+    "tailwindcss-multi-column": "^1.0.2"
   }
 }
