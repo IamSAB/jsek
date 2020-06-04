@@ -13,7 +13,8 @@
     "@factor/plugin-sitemap": "^1.0.0",
     "@factor/plugin-storage-s3": "^1.0.0",
     "@factor/plugin-tailwind": "^1.7.9",
-    "tailwindcss-multi-column": "^1.0.2"
+    "tailwindcss-multi-column": "^1.0.2",
+    "vue-masonry-wall": "^0.2.5"
   },
   "factor": {
     "app": {

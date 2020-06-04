@@ -21,13 +21,13 @@ export default {
 <style lang="postcss">
 .markdown {
   h1 {
-    @apply font-black text-2xl mt-4 mb-3;
+    @apply font-black text-2xl pt-4 mb-3;
   }
   h2 {
-    @apply font-bold text-xl mt-3 mb-2;
+    @apply font-bold text-xl pt-3 mb-2;
   }
   h3 {
-    @apply font-semibold text-lg mt-2 mb-1;
+    @apply font-semibold text-lg pt-2 mb-1;
   }
   ul {
     @apply list-disc list-inside;
