@@ -89,6 +89,8 @@ export default {
         },
     },
 
+    menus: ['navbarLeft', 'navbarRight', 'footer'],
+
     blog: {
         limit: 2,
         components: {

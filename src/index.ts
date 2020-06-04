@@ -1,4 +1,12 @@
 import { addPageTemplate } from "@factor/api"
+import { addPostType } from "@factor/api"
+
+addPostType({
+  postType: "menu-item",
+  managePosts: true,
+  noAddNew: true,
+  listTemplate: (): Promise<any> => import("./dashboard/menus.vue"),
+})
 
 addPageTemplate({
   slug: "seite",
