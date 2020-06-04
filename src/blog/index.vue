@@ -1,32 +1,37 @@
 <template>
   <main>
     <header class="text-center mt-6">
-      <h1 class="text-6xl text-blue-900">{{ setting('blog.metatags.index.title') }}</h1>
-      <p class="text-2xl mt-3 text-blue-700 font-bold">{{ setting('blog.metatags.index.description') }}</p>
-      <component :is="setting('blog.components.returnLink')" v-if="tag || page > 1" />
-      <svg class="mt-8 w-full h-16 fill-current text-gray-300" viewBox="0 0 200 20" preserveAspectRatio="none">
-        <polygon points="0,20 200,0 200,20" />
-      </svg>
+      <heading
+        above="Berichte"
+        :title="setting('blog.metatags.index.title')"
+        :below="setting('blog.metatags.index.description')"
+      />
     </header>
-    <div class="bg-gray-300">
-      <div v-if="loading" class="mx-auto mt-20">
-        <factor-spinner />
-      </div>
-      <div v-else-if="blogPosts.length > 0" class="container mx-auto p-10">
-        <div class="grid sm:grid-cols-2 xl:grid-cols-3 gap-20">
-          <article v-for="post in blogPosts" :key="post._id">
-            <div class="-ml-5 mr-5">
-              <component :is="setting('blog.components.featuredImage')" :postId="post._id" class="shadow-lg rounded-lg transform -skew-y-3 skew-x-3" />
-            </div>
-            <div class="relative bg-gray-100 p-5 -mt-10 -mr-5 ml-5 rounded-md overflow-hidden shadow">
-              <component class="text-md -mb-1" :is="setting('blog.components.date')" :postId="post._id" />
-              <component class="text-4xl" :is="setting('blog.components.title')" :postId="post._id" />
-              <component class="text-lg font-bold" :is="setting('blog.components.subtitle')" :postId="post._id" />
-              <component class="text-lg font-bold" :is="setting('blog.components.meta')" :postId="post._id" />
-              <component :is="setting('blog.components.excerpt')" :postId="post._id" />
-              <component :is="setting('blog.components.author')" :postId="post._id" />
-            </div>
-          </article>
+    <svg-section top-svg="triangle" bg-before="var(--color-bg)" bg="var(--color-lightgray)">
+      <div v-if="wallPosts.length > 0" class="container">
+        <vue-masonry-wall :items="wallPosts" :options="masonryOptions" @append="loadNextPage">
+          <template v-slot:default="{item}">
+            <article>
+              <photo :source="item.avatar" />
+              <div class="flex flex-col sm:flex-row">
+                <heading
+                  class="max-width-sm"
+                  :above="standardDate(item.date)"
+                  :title="item.title"
+                  :below="item.synopsis"
+                  :heading="2"
+                />
+                <component
+                  class="flex-grow"
+                  :is="setting('blog.components.excerpt')"
+                  :postId="item._id"
+                />
+              </div>
+            </article>
+          </template>
+        </vue-masonry-wall>
+        <div v-if="loading" class="mt-24">
+          <factor-spinner />
         </div>
       </div>
       <div v-else class="posts-not-found">
@@ -35,72 +40,101 @@
           <p class="sub-title">{{ setting("blog.notFound.subTitle") }}</p>
         </div>
       </div>
-    </div>
-    <footer>
-      <svg class="mb-5 w-full h-16 fill-current text-gray-300" viewBox="0 0 200 20" preserveAspectRatio="none">
-        <polygon points="0,0 200,0 200,20" />
-      </svg>
-      <component class="container mx-auto p-5" :is="setting('blog.components.pagination')" :post-type="postType" />
-    </footer>
+    </svg-section>
+    <footer></footer>
   </main>
 </template>
 <script lang="ts">
-import { factorSpinner } from "@factor/ui"
-import { setting, stored } from "@factor/api"
-import { loadAndStoreBlogIndex } from "@factor/plugin-blog"
+import { factorSpinner } from "@factor/ui";
+import { setting, stored, standardDate } from "@factor/api";
+import VueMasonryWall from "vue-masonry-wall";
+import { loadAndStoreBlogIndex } from "@factor/plugin-blog";
+import svgSection from "components/svg-section.vue";
+import heading from "components/heading.vue";
+import photo from "components/photo.vue";
+import { requestPostIndex } from "@factor/post/request"
+import { PostStatus } from "@factor/post/types"
+
+
 export default {
-  components: { factorSpinner },
+  components: { factorSpinner, svgSection, heading, photo, VueMasonryWall },
   data() {
     return {
       postType: "blog",
+      wallPosts: [],
+      category: "",
+      tag: "",
+      search: "",
+      pages: 0,
       loading: false,
-    }
+      masonryOptions: {
+        width: 500,
+        padding: {
+          default: 12,
+          1: 10,
+          2: 8
+        }
+      }
+    };
   },
   metaInfo() {
-    const title = this.tag ? `Tag "${this.tag}"` : setting("blog.metatags.index.title")
+    const title = this.tag
+      ? `Tag "${this.tag}"`
+      : setting("blog.metatags.index.title");
     const description = this.tag
-      ? `Articles related to tag: ${this.tag}`
-      : setting("blog.metatags.index.description")
+      ? `Artikel verwandt mit Tag: ${this.tag}`
+      : setting("blog.metatags.index.description");
     return {
       title,
-      description,
-    }
-  },
-  serverPrefetch(this: any) {
-    return this.getPosts()
+      description
+    };
   },
   computed: {
-    tag(this: any) {
-      return this.$route.params.tag || this.$route.query.tag || ""
-    },
     index(this: any) {
-      return stored(this.postType) || {}
-    },
-    blogPosts(this: any) {
-      const { posts = [] } = this.index
-      return posts
-    },
-    page(this: any) {
-      return this.$route.query.page || 1
-    },
-  },
-  watch: {
-    $route: {
-      handler: function (this: any) {
-        this.getPosts()
-      },
-    },
+      return stored(this.postType) || {};
+    }
   },
   mounted() {
-    this.getPosts()
+    this.loadFirstPage();
   },
   methods: {
     setting,
-    async getPosts(this: any) {
-      this.loading = true
-      await loadAndStoreBlogIndex()
-      this.loading = false
+    standardDate,
+    async load(this: any, page) {
+      this.loading = true;
+      await this.loadAndStoreBlogIndex(page);
+      const { posts = [] } = this.index
+      this.wallPosts.push(...posts);
+      this.loading = false;
     },
-  },
-}
+    async loadFirstPage (this: any) {
+      const { params, query } = this.$route
+      this.tag = params.tag ?? query.tag ?? ""
+      this.category = params.category ?? query.category ?? ""
+      this.search = params.search ?? query.search ?? ""
+      const page = Number.parseInt(params.page ?? query.page ?? 1)
+      await this.load(page)
+      this.pages = 1
+    },
+    async loadNextPage(this: any) {
+      if (this.loadedPages < this.index.meta.pageCount) {
+        this.pages++
+        this.load(this.pages)
+      }
+    },
+    async loadAndStoreBlogIndex (this: any, page: number) {
+      await requestPostIndex({
+        postType: "blog",
+        tag: this.tag,
+        category: this.category,
+        search: this.search,
+        status: PostStatus.Published,
+        sort: "-date",
+        page,
+        limit: setting("blog.limit"),
+        sameSource: true,
+      })
+    }
+  }
+};
 </script>
