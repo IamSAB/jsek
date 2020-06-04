@@ -30,13 +30,13 @@ export default {
                 {
                     _item: "instagram",
                     title: "@jungscharek",
-                    icon: "fa fa-instagram",
+                    icon: "fab fa-instagram",
                     url: "https://www.instagram.com/jungscharek"
                 },
                 {
                     _item: "youtube",
                     title: "Jungschar Ebnat-Kappel",
-                    icon: "fa-youtube-play",
+                    icon: "fab fa-youtube",
                     url: "https://www.youtube.com/channel/UCbItJ7xE1s0ZGjRMpiAR6nA"
                 }
             ],
@@ -90,6 +90,7 @@ export default {
     },
 
     blog: {
+        limit: 2,
         components: {
             blogIndex: (): Promise<any> => import("./blog/index.vue"),
             blogSingle: (): Promise<any> => import("./blog/single.vue"),
