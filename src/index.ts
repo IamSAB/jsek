@@ -26,6 +26,6 @@ addPageTemplate({
 })
 
 addPageTemplate({
-  slug: "fotos",
-  component: (): Promise<any> => import("./templates/fotos.vue"),
+  slug: "form",
+  component: (): Promise<any> => import("./templates/form.vue"),
 })

@@ -29,8 +29,9 @@ html.factor-app {
 
     /* background colors */
     --color-bg: var(--color-lightgray-lighter);
+    --color-bg-input: white;
     --color-bg-contrast: var(--color-lighgray-darker);
-    --color-bg-highlight: #ffffff;
+    --color-bg-highlight: white;
 
     --color-placholder: var(--color-lightgray);
     --font-family-primary: theme('fontFamily.body');

@@ -1,24 +1,14 @@
 <template>
-  <factor-form
-    ref="form"
-    class="contact-form"
-    :class="formStatus"
-    @submit="process()"
-  >
-    <div v-if="processed" class="confirm">
-      <slot name="confirmation">
-        Einreichung war erfolgreich.
-        <br />Du hast eine Bestätigung deiner Anfrage erhalten.
-        <br />Wir melden uns zurück.
-      </slot>
-    </div>
-    <div v-else class="inputs">
+  <factor-form ref="form" class="custom-form" :class="formStatus" @submit="submit()">
+    <div class="inputs" v-show="status < STATUS.SENDING">
       <factor-input-wrap
         v-for="(field, i) in fields"
         :key="i"
         v-model="values[field._id]"
-        :data-test="`contact-form-${field._id}`"
+        :data-test="`custom-form-${field._id}`"
         :input="`factor-input-${field.input}`"
+        :list="field.list || []"
+        :settings="field.settings || {}"
         :description="field.description"
         :input-classes="`${field.inputClasses}`"
         :required="!!field.required"
@@ -26,11 +16,17 @@
         :label-classes="`${field.labelClasses}`"
         :placeholder="getPlaceholder(field)"
       />
-      <factor-input-submit
-        btn="primary"
-        :loading="sending"
-      >Senden</factor-input-submit>
     </div>
+      <render-email
+        ref="renderedEmail"
+        :values="values"
+        :fields="fields"
+      />
+    <factor-input-submit
+    v-show="status < STATUS.SUBMITTED"
+      btn="primary"
+      :loading="status > STATUS.INVALID"
+    >Einreichen</factor-input-submit>
   </factor-form>
 </template>
 
@@ -46,38 +42,24 @@ import { saveContactForm } from "@factor/plugin-contact-form";
 import { randomToken } from "@factor/api/utils";
 import { systemUrl } from "@factor/api";
 import { sendEmailRequest } from "@factor/email";
-import { saveForm, renderTable } from "../form";
-import btn from "./btn.vue"
+import { saveForm, renderMail } from "../form";
+import btn from "./btn.vue";
+
+const renderEmail = setting("form.email.render");
 
 export default {
-  components: { factorInputWrap, factorForm, factorInputSubmit, factorSpinner, btn },
+  components: {
+    factorInputWrap,
+    factorForm,
+    factorInputSubmit,
+    factorSpinner,
+    btn,
+    renderEmail
+  },
   props: {
     fields: {
       type: Array,
-      default: () => [
-        {
-          _id: "name",
-          input: "text",
-          label: "Vorname und Nachname",
-          description: "Wie du angesprochen wirst",
-          required: true
-        },
-        {
-          _id: "email",
-          input: "email",
-          label: "Email",
-          description:
-            "Bestätigung deiner Einreichung wird an diese Adresse versendet.",
-          required: true
-        },
-        {
-          _id: "message",
-          input: "editor",
-          label: "Nachricht",
-          description: "Was liegt dir auf dem Herzen?",
-          required: true
-        }
-      ]
+      default: () => setting("form.fields.default")
     },
     values: {
       type: Object,
@@ -94,23 +76,22 @@ export default {
   },
   data() {
     return {
-      saving: false,
-      sending: false,
-      processed: false,
+      status: 0,
+      STATUS: {
+        UNCHECKED: 0,
+        INVALID: 1,
+        SAVING: 2,
+        SENDING: 3,
+        SUBMITTED: 4
+      },
       formStatus: "unchecked"
     };
-  },
-  computed: {
-    processing() {
-      return this.saving || this.sending || !this.processed;
-    }
   },
   mounted() {
     this.$watch(
       "values",
       function(this: any) {
         const v = this.$refs.form.$el.checkValidity();
-        console.log(v)
         this.formStatus = v ? "valid" : "invalid";
       },
       { deep: true, immediate: true }
@@ -118,45 +99,56 @@ export default {
   },
   methods: {
     setting,
-    async save(this: any) {
-      this.saving = true;
+    evaluate(this: any, obj: Record<string, any>, v: Record<string, any>) {
+      for (let key in obj) {
+        console.log(key);
+        if (obj[key] instanceof Function) {
+          console.log(obj[key](v));
+          obj[key] = obj[key](v);
+        }
+      }
+      return obj;
+    },
+    async submit(this: any) {
+      this.status = this.STATUS.SAVING;
       const post = await saveForm(this.fields, this.values);
-      this.saving = false;
-      return post;
-    },
-    async mail(this: any, config: any) {
+      this.status = this.STATUS.SENDING;
+
+      const values = {
+          title: document.title,
+          href: window.location.href,
+          ...this.values,
+          app: setting("app")
+        }
+        console.log(values)
+
+        const text = this.$refs.renderedEmail.$el.outerHTML,
+        meta = this.evaluate(setting("form.email.meta"), values);
+
+
       await sendEmailRequest("sendEmail", {
-        to: config.to(this.values),
-        title: config.title(this.values),
-        subject: config.subject(this.values),
-        text: renderTable(this.fields, this.values),
-        linkUrl: window.location.href,
-        linkText: `Eingereichter Inhalt des Formulars auf ${document.title}`,
-        textFooter: `Dieses Mail wurde aufgrund einer Formulareinreichung auf ${this.setting(
-          "app.name"
-        )} automatisch versendet`
+        ...this.evaluate(
+          {
+            ...setting("form.email.confirm"),
+            ...this.confirmation
+          },
+          values
+        ),
+        ...meta,
+        text
       });
-    },
-    async process(this: any) {
-      const post = await this.save();
-      this.sending = true;
-      await this.mail({
-        to: values => values.email,
-        title: values =>
-          `Anfrage auf ${this.setting("app.name")} mit ${values.name} / ${
-            values.email
-          }`,
-        subject: values => `Anfrage als  ${values.name} / ${values.email}`,
-        ...this.confirmation
+      await sendEmailRequest("sendEmail", {
+        ...this.evaluate(
+          {
+            ...setting("form.email.notify"),
+            ...this.notification
+          },
+          values
+        ),
+        ...meta,
+        text
       });
-      await this.mail({
-        to: () => this.setting("app.email"),
-        title: values => `Anfrage von ${values.name}`,
-        subject: values => `Anfrage von ${values.name} / ${values.email}`,
-        ...this.notification
-      });
-      this.sending = false;
-      this.processed = true;
+      this.status = this.STATUS.SUBMITTED;
     },
     getLabel(c: any): string {
       const label = [c.label];
@@ -183,10 +175,13 @@ export default {
 #app .CodeMirror {
   text-align: left;
 }
-#app input, select, textarea {
-  @apply bg-white w-2/3 max-w-md
+#app input,
+select,
+textarea {
+  @apply w-2/3 max-w-md;
 }
-#app input:focus, select:focus {
+#app input:focus,
+select:focus {
   @apply shadow;
 }
 </style>
