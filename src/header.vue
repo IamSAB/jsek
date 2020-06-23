@@ -83,7 +83,6 @@ export default {
   },
   data() {
     return {
-      loading: true,
       menuNavbarLeft: setting("site.menus.navbarLeft"),
       menuNavbarRight: setting("site.menus.navbarRight"),
       socials: setting("site.menus.socials")
@@ -94,9 +93,6 @@ export default {
       const post = stored("permalink");
       return  post ? post._id : ""
     }
-  },
-  mounted: function () {
-    this.loading = false
   }
 }
 </script>

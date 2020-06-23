@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { setting, stored } from "@factor/api";
+import { setting } from "@factor/api";
 import { templateSettings, interpolate, computed } from "./form/template";
 import customForm from "components/form.vue";
 import heading from "components/heading.vue";
