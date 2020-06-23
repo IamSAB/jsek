@@ -31,8 +31,5 @@ module.exports = {
     },
     variants: {
         borderWidth: ['hover'],
-    },
-    plugins: [
-        require('tailwindcss-multi-column')()
-    ],
+    }
 }

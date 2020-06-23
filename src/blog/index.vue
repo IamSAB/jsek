@@ -1,6 +1,6 @@
 <template>
   <main>
-    <header class="text-center mt-6">
+    <header class="text-center my-8">
       <heading
         above="Berichte"
         :title="setting('blog.metatags.index.title')"
@@ -8,81 +8,89 @@
       />
     </header>
     <svg-section top-svg="triangle" bg-before="var(--color-bg)" bg="var(--color-lightgray)">
-      <div v-if="wallPosts.length > 0" class="container">
-        <vue-masonry-wall :items="wallPosts" :options="masonryOptions" @append="loadNextPage">
-          <template v-slot:default="{item}">
-            <article>
-              <photo :source="item.avatar" />
-              <div class="flex flex-col sm:flex-row">
-                <heading
-                  class="max-width-sm"
-                  :above="standardDate(item.date)"
-                  :title="item.title"
-                  :below="item.synopsis"
-                  :heading="2"
-                />
-                <component
-                  class="flex-grow"
-                  :is="setting('blog.components.excerpt')"
-                  :postId="item._id"
-                />
-              </div>
-            </article>
-          </template>
-        </vue-masonry-wall>
+      <div v-if="tag" class="text-center">
+        <p class="text-lg text-gray-500 font-bold mb-2">
+          Alle Berichte mit dem Tag "{{ startCase(tag) }}"
+        </p>
+        <factor-link :path="setting('blog.indexRoute')">
+          <span class="uppercase font-semibold text-sm tracking-wide">Zurücksetzen</span>
+        </factor-link>
+      </div>
+      <div v-if="blogPosts.length > 0" class="container mt-16">
+        <article v-for="(item, i) in blogPosts" :key="item._id" class="my-12 shadow-xs">
+          <photo :source="item.avatar" />
+          <div class="my-2"></div>
+          <div class="flex flex-col sm:flex-row items-center">
+            <div :class="`sm:w-2/5 flex-none p-5 ${i%2 ? 'sm:order-last': ''}`">
+              <heading
+                class="text-center"
+                :above="standardDate(item.date)"
+                :title="item.title"
+                :below="item.synopsis"
+                :heading="2"
+                :divider="false"
+              />
+              <tags @selected="filterByTag" :tags="item.tag" class="justify-center mt-2" />
+            </div>
+            <div :class="`p-5 ${i%2 ? 'text-right': ''}`">
+              <div class="mb-2">{{ excerpt(item.content) }}</div>
+              <factor-link class="read-link" :path="postLink(item._id)">
+                Mehr lesen
+                <factor-icon icon="fas fa-arrow-right" />
+              </factor-link>
+            </div>
+          </div>
+        </article>
         <div v-if="loading" class="mt-24">
           <factor-spinner />
         </div>
       </div>
-      <div v-else class="posts-not-found">
-        <div>
-          <h1>{{ setting("blog.notFound.title") }}</h1>
-          <p class="sub-title">{{ setting("blog.notFound.subTitle") }}</p>
-        </div>
+      <div v-else class="text-center">
+        <h1 class="text-xl my-5">{{ setting("blog.notFound.title") }}</h1>
+        <p>{{ setting("blog.notFound.subTitle") }}</p>
       </div>
     </svg-section>
-    <footer></footer>
+    <footer class="container my-12">
+      <pagination post-type="blog" />
+    </footer>
   </main>
 </template>
 <script lang="ts">
-import { factorSpinner } from "@factor/ui";
-import { setting, stored, standardDate } from "@factor/api";
-import VueMasonryWall from "vue-masonry-wall";
-import { loadAndStoreBlogIndex } from "@factor/plugin-blog";
-import svgSection from "components/svg-section.vue";
-import heading from "components/heading.vue";
+import { factorSpinner, factorLink, factorIcon } from "@factor/ui";
+import { setting, stored, standardDate, postLink } from "@factor/api";
+import { excerpt } from "@factor/api/excerpt";
 import photo from "components/photo.vue";
-import { requestPostIndex } from "@factor/post/request"
-import { PostStatus } from "@factor/post/types"
-
+import heading from "components/heading.vue";
+import svgSection from "components/svg-section.vue";
+import tags from "components/tags.vue";
+import {startCase} from "lodash-es"
 
 export default {
-  components: { factorSpinner, svgSection, heading, photo, VueMasonryWall },
+  components: {
+    factorSpinner,
+    factorLink,
+    factorIcon,
+    photo,
+    heading,
+    svgSection,
+    pagination: setting("blog.components.pagination"),
+    tags
+  },
   data() {
     return {
       postType: "blog",
-      wallPosts: [],
-      category: "",
-      tag: "",
-      search: "",
-      pages: 0,
       loading: false,
-      masonryOptions: {
-        width: 500,
-        padding: {
-          default: 12,
-          1: 10,
-          2: 8
-        }
-      }
+      notFoundTitle: setting("blog.notFound.title"),
+      notFoundSubTitle: setting("blog.notFound.subTitle"),
+      indexLayoutComponents: setting("blog.layout.index")
     };
   },
-  metaInfo() {
+  metaInfo(this: any) {
     const title = this.tag
       ? `Tag "${this.tag}"`
       : setting("blog.metatags.index.title");
     const description = this.tag
-      ? `Artikel verwandt mit Tag: ${this.tag}`
+      ? `Tag: ${this.tag}`
       : setting("blog.metatags.index.description");
     return {
       title,
@@ -90,50 +98,29 @@ export default {
     };
   },
   computed: {
+    tag(this: any) {
+      return this.$route.params.tag || this.$route.query.tag || "";
+    },
+    page(this: any) {
+      return this.$route.query.page || 1;
+    },
     index(this: any) {
       return stored(this.postType) || {};
+    },
+    blogPosts(this: any) {
+      const { posts = [] } = this.index;
+      return posts;
     }
-  },
-  mounted() {
-    this.loadFirstPage();
   },
   methods: {
     setting,
     standardDate,
-    async load(this: any, page) {
-      this.loading = true;
-      await this.loadAndStoreBlogIndex(page);
-      const { posts = [] } = this.index
-      this.wallPosts.push(...posts);
-      this.loading = false;
-    },
-    async loadFirstPage (this: any) {
-      const { params, query } = this.$route
-      this.tag = params.tag ?? query.tag ?? ""
-      this.category = params.category ?? query.category ?? ""
-      this.search = params.search ?? query.search ?? ""
-      const page = Number.parseInt(params.page ?? query.page ?? 1)
-      await this.load(page)
-      this.pages = 1
-    },
-    async loadNextPage(this: any) {
-      if (this.loadedPages < this.index.meta.pageCount) {
-        this.pages++
-        this.load(this.pages)
-      }
-    },
-    async loadAndStoreBlogIndex (this: any, page: number) {
-      await requestPostIndex({
-        postType: "blog",
-        tag: this.tag,
-        category: this.category,
-        search: this.search,
-        status: PostStatus.Published,
-        sort: "-date",
-        page,
-        limit: setting("blog.limit"),
-        sameSource: true,
-      })
+    excerpt,
+    postLink,
+    startCase,
+    filterByTag(selected: string[]) {
+      const tag = selected[0]
+      this.$router.push({ query: { ...this.$route.query, tag } })
     }
   }
 };

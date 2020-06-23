@@ -3,7 +3,7 @@
     <article v-if="!isEmpty(post)">
       <header class="text-center">
         <heading above="Bericht" :title="post.title" :below="post.synopsis" />
-        <div>
+        <div class="my-4">
           <tags class="justify-center" :tags="post.tag" @selected="viewTag" />
         </div>
       </header>
@@ -52,8 +52,7 @@
 
 <script lang="ts">
 import widgetSocial from "@factor/plugin-blog/widget-social.vue";
-import { factorError404, factorLink, factorAvatar } from "@factor/ui";
-import { factorHighlightCode } from "@factor/plugin-highlight-code";
+import { factorError404, factorLink } from "@factor/ui";
 import {
   isEmpty,
   setting,
@@ -124,10 +123,7 @@ export default {
     isEmpty,
     setting,
     standardDate,
-    postLink,
-    viewTag(tag: string) {
-      console.log(tag);
-    }
+    postLink
   }
 };
 </script>

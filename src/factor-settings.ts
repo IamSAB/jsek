@@ -90,16 +90,11 @@ export default {
   },
 
   blog: {
-    limit: 2,
+    limit: 4,
     components: {
       blogIndex: (): Promise<any> => import("./blog/index.vue"),
       blogSingle: (): Promise<any> => import("./blog/single.vue"),
-      featuredImage: (): Promise<any> => import("./blog/widget-featured-image.vue"),
-      date: (): Promise<any> => import("./blog/widget-date.vue"),
-      title: (): Promise<any> => import("./blog/widget-title.vue"),
-      subtitle: (): Promise<any> => import("./blog/widget-subtitle.vue"),
-      excerpt: (): Promise<any> => import("./blog/widget-excerpt.vue"),
-      pagination: (): Promise<any> => import("./blog/widget-pagination.vue")
+      pagination: (): Promise<any> => import("./blog/pagination.vue")
     }
   },
 

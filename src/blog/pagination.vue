@@ -1,11 +1,11 @@
 <template>
   <div class="flex items-center">
-    <div class="items">{{ count }} Artikel</div>
-    <factor-btn :disabled="pageCurrent == 1" @click="page('previous')">
+    <div class="mr-8">{{ count }} Artikel</div>
+    <factor-btn :disabled="pageCurrent == 1" @click="page('previous')" size="small">
       <factor-icon icon="fas fa-arrow-left" />
     </factor-btn>
-    <div class="sep">{{ pageCurrent }} von {{ pageCount }}</div>
-    <factor-btn :disabled="pageCurrent == pageCount" @click="page('next')">
+    <div class="mx-4">{{ pageCurrent }} von {{ pageCount }}</div>
+    <factor-btn :disabled="pageCurrent == pageCount" @click="page('next')" size="small">
       <factor-icon icon="fas fa-arrow-right" />
     </factor-btn>
   </div>

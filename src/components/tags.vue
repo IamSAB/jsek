@@ -20,13 +20,13 @@ export default {
           "li",
           {
             class:
-              "mx-1 px-2 py-1 bg-gray-500 hover:bg-gray-400 cursor-pointer shadow rounded"
+              "mx-1 px-2 py-1 bg-gray-400 hover:bg-gray-300 cursor-pointer shadow-xs rounded"
           },
           [
             h(
               "a",
               {
-                class: "font-semibold text-gray-800 capitalize"
+                class: "font-semibold text-gray-600 uppercase text-xs"
               },
               [this.$slots.default]
             )
