@@ -2896,9 +2896,9 @@ electron-to-chromium@^1.3.413:
   integrity sha512-IQbCfjJR0NDDn/+vojTlq7fPSREcALtF8M1n01gw7nQghCtfFYrJ2dfhsp8APr8bANoFC8vRTFVXMOGpT0eetw==
 
 elliptic@^6.0.0, elliptic@^6.5.2:
-  version "6.5.2"
-  resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.5.2.tgz#05c5678d7173c049d8ca433552224a495d0e3762"
-  integrity sha512-f4x70okzZbIQl/NSRLkI/+tteV/9WqL98zx+SQ69KbXxmVrmjwsNUPn/gYJJ0sHvEak24cZgHIPegRePAtA/xw==
+  version "6.5.3"
+  resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.5.3.tgz#cb59eb2efdaf73a0bd78ccd7015a62ad6e0f93d6"
+  integrity sha512-IMqzv5wNQf+E6aHeIqATs0tOLeOTwj1QKbRcS3jBbYkl5oLAserA8yJTT7/VyHUYG91PRmPyeQDObKLPpeS4dw==
   dependencies:
     bn.js "^4.4.0"
     brorand "^1.0.1"
@@ -3341,13 +3341,6 @@ findup-sync@^3.0.0:
     is-glob "^4.0.0"
     micromatch "^3.0.4"
     resolve-dir "^1.0.1"
-
-flat@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/flat/-/flat-4.1.0.tgz#090bec8b05e39cba309747f1d588f04dbaf98db2"
-  integrity sha512-Px/TiLIznH7gEDlPXcUD4KnBusa6kR6ayRUVcnEAbreRIuhkqow/mun59BuRXwoYk7ZQOLW1ZM05ilIvK38hFw==
-  dependencies:
-    is-buffer "~2.0.3"
 
 flatted@^2.0.1:
   version "2.0.2"
@@ -4175,7 +4168,7 @@ is-buffer@^1.1.5:
   resolved "https://registry.yarnpkg.com/is-buffer/-/is-buffer-1.1.6.tgz#efaa2ea9daa0d7ab2ea13a97b2b8ad51fefbe8be"
   integrity sha512-NcdALwpXkTm5Zvvbk7owOUSvVvBKDgKP5/ewfXEznmQFfs4ZRmanOeKBTjRVjka3QFoN6XJ+9F3USqfHqTaU5w==
 
-is-buffer@^2.0.0, is-buffer@~2.0.3:
+is-buffer@^2.0.0:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/is-buffer/-/is-buffer-2.0.4.tgz#3e572f23c8411a5cfd9557c849e3665e0b290623"
   integrity sha512-Kq1rokWXOPXWuaMAqZiJW4XxsmD9zGx9q4aePabbn3qCRGedtH7Cm+zV8WETitMfu1wdh+Rvd6w5egwSngUX2A==
@@ -7656,14 +7649,6 @@ svgo@^1.0.0:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
-tailwindcss-multi-column@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/tailwindcss-multi-column/-/tailwindcss-multi-column-1.0.2.tgz#630f5ec6586d0846014555aa2c91510c06a8b715"
-  integrity sha512-2hn7WIgzTWfstPz7H0C2dqQTWoOMfUweH3MEYXhydpLpiIs5HWZkuP05vI92lVwEGB/7QVpjWZKGeUgiwbN7Yw==
-  dependencies:
-    flat "^4.1.0"
-    lodash "^4.17.11"
-
 tailwindcss@^1.1.3:
   version "1.4.6"
   resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-1.4.6.tgz#17b37166ccda08d7e7f9ca995ea48ce1e0089700"
@@ -8270,24 +8255,12 @@ vue-loader@^15.7.0:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
-vue-masonry-wall@^0.2.5:
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/vue-masonry-wall/-/vue-masonry-wall-0.2.5.tgz#200086afa4b015c6f5d9fd2a68aff651c89883ca"
-  integrity sha512-LoY0rWzO+sniM0/olUUxjM7GYQSClK0zV9svueCpsktg2pgnBjkyfrKA1XN+awuDlmdcGiXVF6YmN0nP6xrebg==
-  dependencies:
-    vue-observe-visibility "^0.4.6"
-
 vue-meta@^2.2.2:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/vue-meta/-/vue-meta-2.3.4.tgz#fe28af0721e9bc4003422bd4b401c0b628512d12"
   integrity sha512-Mz/5ykeWlhyTDVSTFLBM5tmVU/C+fX6rmVAkLSxbYegJUhUZh3N4D0b7nC0/knG1esK2l6r8iW/N0KeU+38bEQ==
   dependencies:
     deepmerge "^4.2.2"
-
-vue-observe-visibility@^0.4.6:
-  version "0.4.6"
-  resolved "https://registry.yarnpkg.com/vue-observe-visibility/-/vue-observe-visibility-0.4.6.tgz#878cb8ebcf3078e40807af29774e97105ebd519e"
-  integrity sha512-xo0CEVdkjSjhJoDdLSvoZoQrw/H2BlzB5jrCBKGZNXN2zdZgMuZ9BKrxXDjNP2AxlcCoKc8OahI3F3r3JGLv2Q==
 
 vue-router@^3.0.2:
   version "3.3.1"
