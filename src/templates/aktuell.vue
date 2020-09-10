@@ -104,6 +104,7 @@ import {
   factorSpinner,
   factorLink
 } from "@factor/ui";
+import { PostStatus } from "@factor/post/types"
 
 export default {
   components: {
@@ -135,9 +136,9 @@ export default {
   async mounted() {
     await requestPostIndex({
       postType: "blog",
-      limit: 3,
+      status: PostStatus.Published,
       sort: "-date",
-      status: "published"
+      limit: 3
     });
   },
   computed: {

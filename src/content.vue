@@ -1,17 +1,17 @@
 <template>
   <div class="antialiased">
-    <jsek-header />
-    <router-view />
-    <jsek-footer />
+    <router-view/>
+    <site-footer/>
   </div>
 </template>
 
 <script lang="ts">
 import { setting } from "@factor/api/settings"
+import footer from "./site/footer.vue"
+
 export default {
   components: {
-    jsekHeader: setting(`site.components.header`),
-    jsekFooter: setting(`site.components.footer`),
+    siteFooter: footer
   },
   metaInfo() {
     return {

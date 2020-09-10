@@ -17,7 +17,7 @@
 
 <script>
 import { setting } from "@factor/api"
-import Menu from "./components/menu.vue"
+import Menu from "../components/menu.vue"
 
 export default {
   components: {

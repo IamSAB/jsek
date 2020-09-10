@@ -17,26 +17,58 @@ export default {
     titleTemplate: "%s - JSEK",
   },
 
+  widget: {
+    positions: [
+      {
+        value: "navbarLeft",
+        name: "Navbar Left",
+        desc: "",
+        layout: "flexgrid"
+      },
+      {
+        value: "navbarRight",
+        name: "Navbar Right",
+        desc: "",
+        layout: "flexgrid"
+      },
+      {
+        value: "top",
+        name: "Top",
+        desc: "Header of page below the navbar",
+        layout: "flexgrid"
+      },
+      {
+        value: "bottom",
+        name: "Bottom",
+        desc: "Above footer of page below the main content",
+        layout: "flexgrid"
+      },
+      {
+        value: "footer",
+        name: "Footer",
+        desc: "Footer of page center",
+        layout: "flexgrid"
+      }
+    ],
+    components: {}
+  },
+
   /**
    * Global Theme Settings
    */
   site: {
-    components: {
-      header: (): Promise<any> => import("./header.vue"),
-      footer: (): Promise<any> => import("./footer.vue"),
-    },
     menus: {
       socials: [
         {
           _item: "instagram",
           title: "@jungscharek",
-          icon: "fab fa-instagram",
+          icon: "fab fa-instagram fa-lg",
           url: "https://www.instagram.com/jungscharek"
         },
         {
           _item: "youtube",
-          title: "Jungschar Ebnat-Kappel",
-          icon: "fab fa-youtube",
+          title: "",
+          icon: "fab fa-youtube fa-lg",
           url: "https://www.youtube.com/channel/UCbItJ7xE1s0ZGjRMpiAR6nA"
         }
       ],
@@ -96,57 +128,5 @@ export default {
       blogSingle: (): Promise<any> => import("./blog/single.vue"),
       pagination: (): Promise<any> => import("./blog/pagination.vue")
     }
-  },
-
-  form: {
-    fields: {
-      default: [
-        {
-          _id: "name",
-          input: "text",
-          label: "Vorname und Nachname",
-          description: "Wie du angesprochen wirst",
-          required: true
-        },
-        {
-          _id: "email",
-          input: "email",
-          label: "Email",
-          description:
-            "Bestätigung deiner Einreichung wird an diese Adresse versendet.",
-          required: true
-        },
-        {
-          _id: "message",
-          input: "editor",
-          label: "Nachricht",
-          description: "Was liegt dir auf dem Herzen?",
-          required: true
-        }
-      ],
-      render: {
-        editor: (): Promise<any> => import("./templates/form/render-editor.vue"),
-        tags: (): Promise<any> => import("./templates/form/render-tags.vue"),
-        sortable: (): Promise<any> => import("./templates/form/render-sortable.vue"),
-      },
-    },
-    email: {
-      render: (): Promise<any> => import("./templates/form/render-email.vue"),
-      notify: {
-        to: v => v.app.email,
-        subject: v => `Formulareinreichung auf ${v.title}`,
-        title: v => `Formulareinreichung von ${v.email}`
-      },
-      confirm: {
-        to: v => v.email,
-        subject: v => `Bestätigung deiner Formulareinreichung auf ${v.app.title}`,
-        title: v => `Inhalt deiner Einreichung auf ${v.app.title}`
-      },
-      meta: {
-        linkText: v => `Eingereichter Inhalt des Formulars auf ${v.title}`,
-        linkUrl: v => v.href,
-        textFooter: v => `Dieses Mail wurde aufgrund einer Formulareinreichung auf ${v.app.name} [${v.app.url}] automatisch versendet.`,
-      }
-    },
   }
 }

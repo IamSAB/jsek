@@ -1,16 +1,25 @@
 <template>
-  <div class="feature-boxes">
-    <div v-for="(box, i) in settings.boxes" :key="i" class="box">
-      <div class="box-heading">{{ box.heading }}</div>
-      <div class="box-description">{{ box.description }}</div>
-    </div>
+  <div>
+    <site-header/>
+    <widgets position="top"/>
+    <h1>{{ post.title }}</h1>
+    <markdown :content="post.content" />
+    <widgets position="bottom"/>
   </div>
 </template>
 
 <script>
   import { setting, stored } from "@factor/api"
+  import widgets from "widgets/widgets.vue"
+  import markdown from "../components/markdown.vue"
+  import header from "../site/header.vue"
 
   export default {
+    components: {
+      widgets,
+      markdown,
+      siteHeader: header
+    },
     computed: {
       post() {
         return stored("permalink") || {}
@@ -19,33 +28,6 @@
         return this.post.settings || {}
       }
     },
-    methods: { setting },
-    templateSettings() {
-      return [
-        {
-          _id: "sections",
-          input: "sortable",
-          label: "Abschnitte",
-          description: "Abschnitte mit spezifischen Inhalten",
-          _default: [{ __title: "Abschnitt 1" }, { __title: "Abschnitt 2" }, { __title: "Abschnitt 3" }],
-          settings: [
-            {
-              input: "text",
-              label: "Titel",
-              description: "Überschrift für den Abschnitt",
-              _id: "title",
-              _default: "Titel",
-            },
-            {
-              input: "editor",
-              label: "Inhalt",
-              description: "Inhalt des Abschnittes",
-              _id: "content",
-              _default: "Lorem ipsum ...",
-            }
-          ],
-        }
-      ]
-    },
+    methods: { setting }
   }
 </script>

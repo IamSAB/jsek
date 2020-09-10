@@ -4,17 +4,17 @@
     <markdown :content="post.content" />
     <custom-form
       class="container"
-      :fields="fields"
-      :notification="notification"
-      :confirmation="confirmation"
+      :fields="settings.fields"
+      :notifyTo="settings.notifyTo"
+      :title="settings.title"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { setting } from "@factor/api";
-import { templateSettings, interpolate, computed } from "./form/template";
-import customForm from "components/form.vue";
+import { stored } from "@factor/api";
+import { templateSettings } from "form/template.ts";
+import customForm from "form/form.vue";
 import heading from "components/heading.vue";
 import markdown from "components/markdown.vue";
 
@@ -24,11 +24,16 @@ export default {
     heading,
     markdown
   },
-  computed,
-  methods: {
-    setting,
-    interpolate
+  computed: {
+    post() {
+      return stored("permalink") || {};
+    },
+    settings() {
+      return this.post.settings || {};
+    }
   },
-  templateSettings
+  templateSettings() {
+    return templateSettings;
+  }
 };
 </script>

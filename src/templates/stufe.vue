@@ -164,14 +164,12 @@ export default {
             input: "text",
             label: "Start",
             _id: "start",
-            description: `Format -> ${DATETIME_FORMAT}`,
             _default: "01.01.20 13:30"
           },
           {
             input: "text",
             label: "Ende",
             _id: "end",
-            description: `Format -> ${DATETIME_FORMAT}`,
             _default: "01.01.20 17:00"
           }
         ]
@@ -214,7 +212,6 @@ export default {
             input: "text",
             label: "Dabei seit",
             _id: "since",
-            description: `Format -> ${MONTH_YEAR_FORMAT}`,
             _default: "Aug, 2016"
           }
         ]
