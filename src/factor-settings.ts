@@ -20,33 +20,23 @@ export default {
   widget: {
     positions: [
       {
-        value: "navbarLeft",
-        name: "Navbar Left",
-        desc: "",
+        name: "Navbar",
+        position: "navbar",
         layout: "flexgrid"
       },
       {
-        value: "navbarRight",
-        name: "Navbar Right",
-        desc: "",
-        layout: "flexgrid"
-      },
-      {
-        value: "top",
         name: "Top",
-        desc: "Header of page below the navbar",
-        layout: "flexgrid"
+        position: "top",
+        layout: "sections"
       },
       {
-        value: "bottom",
         name: "Bottom",
-        desc: "Above footer of page below the main content",
-        layout: "flexgrid"
+        position: "bottom",
+        layout: "sections"
       },
       {
-        value: "footer",
         name: "Footer",
-        desc: "Footer of page center",
+        position: "footer",
         layout: "flexgrid"
       }
     ],
